@@ -5,5 +5,5 @@ variable "gcp_project" {
 
 variable "backend_directory" {
   description = "location of the backend"
-  type = string
+  type        = string
 }

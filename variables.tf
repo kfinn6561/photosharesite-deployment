@@ -18,6 +18,6 @@ variable "gcp_zone" {
 
 variable "root_directory" {
   description = "root directory"
-  type = string
-  default="C:/Users/kiera/Dropbox/code/photo_site"
+  type        = string
+  default     = "C:/Users/kiera/Dropbox/code/photo_site"
 }
