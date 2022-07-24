@@ -1,9 +1,11 @@
 resource "google_sql_database_instance" "pss-instance" {
-  name             = "photosharesite-instance"
+  name             = "photosharesite"
   region           = var.gcp_region
   database_version = var.database_version
+  root_password = random_password.admin-pwd.result
+
   settings {
-    tier = "db-f1-micro"
+    tier = "db-custom-1-3840"
   }
 
   deletion_protection = "false"
@@ -29,4 +31,10 @@ resource "google_sql_user" "admin" {
     name = "admin"
     instance = google_sql_database_instance.pss-instance.name
     password = random_password.admin-pwd.result
+}
+
+resource "google_sql_user" "sqlserver" {
+    name = "sqlserver"
+    instance = google_sql_database_instance.pss-instance.name
+    password = "test"
 }

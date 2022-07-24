@@ -11,7 +11,7 @@ variable "gcp_region" {
 variable "database_version" {
   description = "version of database to use"
   type        = string
-  default     = "MYSQL_8_0"
+  default     = "SQLSERVER_2019_STANDARD"
 }
 
 
