@@ -19,6 +19,7 @@ module "storage" {
   gcp_project                   = var.gcp_project
   gcp_region                    = var.gcp_region
   backend_service_account_email = module.iam.backend_service_account_email
+  backend_directory = format("%s/backend/PhotoBackend", var.root_directory)
 }
 
 output "DB-admin-password" {

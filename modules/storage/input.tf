@@ -11,9 +11,13 @@ variable "gcp_region" {
 variable "database_version" {
   description = "version of database to use"
   type        = string
-  default     = "SQLSERVER_2019_STANDARD"
+  default     = "MYSQL_8_0"
 }
 
+variable "backend_directory" {
+  description = "location of the backend"
+  type        = string
+}
 
 variable "backend_service_account_email" {
   description = "email address of the backend service account"

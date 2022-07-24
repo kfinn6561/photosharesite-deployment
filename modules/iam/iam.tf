@@ -14,5 +14,5 @@ resource "google_service_account_key" "backend_key" {
 
 resource "local_file" "private_key" {
   content  = google_service_account_key.backend_key.private_key
-  filename = format("%s/backend-key.json", var.backend_directory)
+  filename = format("%s/secrets/backend-key.json", var.backend_directory)
 }
