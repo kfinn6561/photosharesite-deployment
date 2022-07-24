@@ -17,7 +17,7 @@ resource "google_sql_database" "pss-database" {
 resource "google_sql_user" "backend-user" {
   name     = var.backend_service_account_email
   instance = google_sql_database_instance.pss-instance.name
-  type     = "CLOUD_IAM_USER"
+  type     = "CLOUD_IAM_SERVICE_ACCOUNT"
 }
 
 resource "random_password" "admin-pwd" {
