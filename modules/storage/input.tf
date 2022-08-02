@@ -19,6 +19,11 @@ variable "backend_directory" {
   type        = string
 }
 
+variable "db_directory" {
+  description = "location of the database code"
+  type        = string
+}
+
 variable "backend_service_account_email" {
   description = "email address of the backend service account"
   type        = string

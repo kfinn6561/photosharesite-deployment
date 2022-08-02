@@ -1,10 +1,22 @@
+data "http" "ip" {
+  url = "https://ifconfig.me"
+}
+
+
 resource "google_sql_database_instance" "pss-instance" {
-  name             = "photosharesite-test-24072"
+  name             = "photosharesite-test-0208"
   region           = var.gcp_region
   database_version = var.database_version
 
   settings {
     tier = "db-f1-micro"
+
+    ip_configuration {
+      authorized_networks  {
+          name = "local"
+          value = data.http.ip.body
+        }
+    }
   }
 
   deletion_protection = "false"
@@ -14,7 +26,6 @@ resource "google_sql_database" "pss-database" {
   name     = "photosharesite"
   instance = google_sql_database_instance.pss-instance.name
 }
-
 
 resource "google_sql_user" "backend-user" {
   name     = var.backend_service_account_email
@@ -33,22 +44,20 @@ resource "google_sql_user" "admin" {
     password = random_password.admin-pwd.result
 }
 
-resource "google_sql_ssl_cert" "mysql_client_cert" {
-  common_name = "photosharesite"
-  instance    = google_sql_database_instance.pss-instance.name
+module "backend_credentials" {
+  source = "../common/db_credentials"
+
+  local_directory = var.backend_directory
+  username = "backend"
+  db_name = google_sql_database.pss-database.name
+  database=google_sql_database_instance.pss-instance
 }
 
-resource "local_file" "server_ca" {
-  content  = google_sql_ssl_cert.mysql_client_cert.server_ca_cert
-  filename = format("%s/secrets/server-ca.pem", var.backend_directory)
-}
+module "db_credentials" {
+  source = "../common/db_credentials"
 
-resource "local_file" "client_cert" {
-  content  = google_sql_ssl_cert.mysql_client_cert.cert
-  filename = format("%s/secrets/client-cert.pem", var.backend_directory)
-}
-
-resource "local_file" "client_key" {
-  content  = google_sql_ssl_cert.mysql_client_cert.private_key
-  filename = format("%s/secrets/client-key.pem", var.backend_directory)
+  local_directory = var.db_directory
+  username = "db-setup"
+  db_name = google_sql_database.pss-database.name
+  database=google_sql_database_instance.pss-instance
 }
