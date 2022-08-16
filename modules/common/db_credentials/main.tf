@@ -30,6 +30,6 @@ resource "local_file" "client_key" {
 }
 
 resource "local_file" "connection_string" {
-  content = "server=${var.database.public_ip_address};uid=${google_sql_user.user.name};pwd=${google_sql_user.user.password};database=${var.db_name};Ssl-Cert=secrets/client-cert.pem;Ssl-Key=secrets/client-key.pem;Ssl-CA=secrets/server-ca.pem;Ssl-Mode=VerifyCA"
+  content = "server=${var.database.public_ip_address};uid=${google_sql_user.user.name};pwd=${google_sql_user.user.password};database=${var.db_name};Ssl-Cert=secrets/client-cert.pem;Ssl-Key=secrets/client-key.pem;Ssl-CA=secrets/server-ca.pem;Ssl-Mode=VerifyCA;AllowUserVariables=True"
   filename = format("%s/secrets/connection-string.txt", var.local_directory)
 }
