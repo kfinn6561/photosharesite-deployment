@@ -3,8 +3,12 @@ data "http" "ip" {
 }
 
 
+resource "random_id" "instance-suffix" {
+  byte_length = 8
+}
+
 resource "google_sql_database_instance" "pss-instance" {
-  name             = "photosharesite-test-0208"
+  name             = "photosharesite-${random_id.instance-suffix.hex}"
   region           = var.gcp_region
   database_version = var.database_version
 
